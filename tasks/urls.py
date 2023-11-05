@@ -15,5 +15,7 @@ urlpatterns = [
     path('api/create_task/', create_task_api, name='create_task'),
     path('api/completed_tasks/', get_completed_tasks, name='completed_tasks_api'),
     path('api/task_details/<int:task_id>/', TaskDetailsView.as_view(), name='task_details_api'),
+    #path('api/tasks/<int:pk>/', TaskUpdateAPIView.as_view(), name='task-update-api'),
+    path('task/completed/<int:task_id>/', Task_Completed, name='task_completed'),
     
 ]

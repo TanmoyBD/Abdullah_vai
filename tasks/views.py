@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status,generics
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views import View
@@ -116,3 +116,32 @@ class TaskDetailsView(View):
             return JsonResponse(data)
         except Task.DoesNotExist:
             return JsonResponse({'error': 'Task not found'}, status=404)
+        
+        
+# class TaskUpdateAPIView(generics.UpdateAPIView):
+
+#     def update(self, request, *args, **kwargs):
+#         task_id = self.kwargs.get('pk')
+#         user = self.request.user
+#         try:
+#             task = Task.objects.get(id=task_id, user=user)
+#         except Task.DoesNotExist:
+#             return Response({"error": "Task not found for this user"}, status=status.HTTP_404_NOT_FOUND)
+        
+#         task.completed = True
+#         task.save()
+        
+#         return Response({"message": "Task updated successfully"}, status=status.HTTP_200_OK)
+
+def Task_Completed(request,task_id):
+    user = request.user
+    try:
+        task = Task.objects.get(user=user, id=task_id)
+        task.completed = True
+        task.save()
+        return redirect('completed_task')
+    except Task.DoesNotExist:
+        return Response({"error": "Task not found for this user"})
+    
+    
+    
