@@ -1,0 +1,40 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="flex justify-center items-center h-screen bg-gradient-to-r from-blue-500 to-indigo-700">
+    <div class="bg-white p-8 shadow-lg rounded-lg text-center text-gray-800">
+        <h1 class="text-3xl mb-4 font-bold">Hello, {{ username }}!</h1>
+        <h2 class="text-lg mb-6">We've sent a confirmation code to your email: <span class="font-semibold text-blue-600">{{ email }}</span></h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4 flex justify-center">
+                <label for="confirmation_code" class="block text-gray-700 text-sm font-bold mb-2 sr-only">Confirmation Code:</label>
+                <div class="relative rounded-md shadow-sm">
+                    <input type="text" id="confirmation_code" name="confirmation_code" class="form-input py-3 px-6 w-20 sm:w-40 text-center sm:h-12 text-2xl transition duration-150 ease-in-out sm:text-sm sm:leading-5 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300" oninput="handleInput(this)" required>
+                </div>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4">Submit</button>
+        </form>
+
+        {% if form.errors %}
+            <div class="mt-4 bg-red-100 border border-red-400 text-red-700 py-2 px-4 rounded">
+                {{ form.errors.confirmation_code }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function handleInput(input) {
+    let value = input.value;
+    value = value.replace(/\D/g, ''); // Remove non-digit characters
+    if (value.length > 6) {
+        value = value.slice(0, 6); // Limit to 6 digits
+    }
+    input.value = value;
+    input.style.fontSize = value.length > 0 ? '2em' : ''; // Set font size to 2em if there is a value
+}
+</script>
+
+{% endblock %}

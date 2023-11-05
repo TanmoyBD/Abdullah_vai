@@ -17,14 +17,41 @@ class SignUpForm(UserCreationForm):
         return password2
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if not email.endswith('@gmail.com'):  # Add more comprehensive email validation if needed
+        if not email.endswith('@gmail.com'):
             raise forms.ValidationError("Invalid email format")
         return email
-
-    # You can also implement additional checks for password strength here if needed.
 
     
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
     
+    
+    
+    
+    
+    
+#Password rest syestem_________________________________________________________________________________
+
+
+
+
+class ConfirmationForm(forms.Form):
+    confirmation_code = forms.CharField(label='Confirmation Code', max_length=6, widget=forms.TextInput(attrs={'autocomplete': 'off'}))
+
+
+
+
+class PasswordChangeForm(forms.Form):
+    new_password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get('new_password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        if new_password != confirm_password:
+            raise forms.ValidationError("Passwords do not match.")
+
+        return cleaned_data
