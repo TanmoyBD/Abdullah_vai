@@ -1,0 +1,67 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<!-- ... -->
+<body>
+    <div class="mt-20">
+        <h2 class="text-xl font-bold mb-2">Create New Task</h2>
+        <form onsubmit="return false;">
+            {% csrf_token %}
+            <!-- ... -->
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text">
+            <!-- ... -->
+            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description"></textarea>
+            <!-- ... -->
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="dueDate" type="datetime-local">
+            <!-- ... -->
+            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="priorityChoice">
+                <option value="1">Low</option>
+                <option value="2">Medium</option>
+                <option value="3">High</option>
+            </select>
+            <div class="flex justify-end">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="createTask(
+                    document.getElementById('title').value,
+                    document.getElementById('description').value,
+                    document.getElementById('dueDate').value,
+                    document.getElementById('priorityChoice').value
+                )">Create Task</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        function createTask( title, description, dueDate, priorityChoice ) {
+            const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+            console.log(title, description, dueDate, priorityChoice)
+        
+            fetch('http://127.0.0.1:8000/api/create_task/', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({
+                    title: title,
+                    description: description,
+                    due_date: dueDate,
+                    priority_choice: priorityChoice
+
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload(); // Reload the page after creation
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+    </script>
+</body>
+<!-- ... -->
+
+
+
+{% endblock %}
