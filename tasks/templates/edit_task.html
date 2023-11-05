@@ -1,0 +1,42 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<div class="max-w-md mx-auto mt-10 p-6 bg-blue-100 rounded-lg shadow-xl">
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    
+    <div class="mb-4">
+      <label for="{{ form.title.id_for_label }}" class="block text-gray-700 font-bold mb-2">Title</label>
+      <input type="text" name="{{ form.title.html_name }}" id="{{ form.title.auto_id }}" class="block w-full py-2 px-4 bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-500" value="{{ form.title.value }}" required>
+    </div>
+    
+    <div class="mb-4">
+      <label for="{{ form.description.id_for_label }}" class="block text-gray-700 font-bold mb-2">Description</label>
+      <textarea name="{{ form.description.html_name }}" id="{{ form.description.auto_id }}" class="block w-full py-2 px-4 bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>{{ form.description.value }}</textarea>
+    </div>
+    
+    <div class="mb-4">
+      <label for="{{ form.priority_choice.id_for_label }}" class="block text-gray-700 font-bold mb-2">Priority</label>
+      <select name="{{ form.priority_choice.html_name }}" id="{{ form.priority_choice.auto_id }}" class="block w-full py-2 px-4 bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+        {% for choice in form.priority_choice.field.choices %}
+          <option value="{{ choice.0 }}" {% if choice.0 == form.priority_choice.value %}selected{% endif %}>{{ choice.1 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <div class="mb-4">
+      <label for="{{ form.due_date.id_for_label }}" class="block text-gray-700 font-bold mb-2">Due Date</label>
+      <input type="date" name="{{ form.due_date.html_name }}" id="{{ form.due_date.auto_id }}" class="block w-full py-2 px-4 bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-500" value="{{ form.due_date.value }}" required>
+    </div>
+    
+    <div class="mb-4">
+      <label for="{{ form.completed.id_for_label }}" class="block text-gray-700 font-bold mb-2">Completed</label>
+      <input type="checkbox" name="{{ form.completed.html_name }}" id="{{ form.completed.auto_id }}" class="mr-2 leading-tight" {% if form.completed.value %}checked{% endif %}>
+    </div>
+    
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+  </form>
+</div>
+
+{% endblock %}

@@ -3,23 +3,33 @@
 {% block content %}
 
 <!-- ... -->
-<body>
-    <div class="mt-20">
-        <h2 class="text-xl font-bold mb-2">Create New Task</h2>
-        <form onsubmit="return false;">
+
+<body style="background-color: #C6F6D5 !important; display: flex; justify-content: center; align-items: center; height: 100vh;">
+
+    <div class="bg-white p-4 rounded-lg shadow-lg md:w-2/3 w-full">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Create New Task</h2>
+        <form>
             {% csrf_token %}
-            <!-- ... -->
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text">
-            <!-- ... -->
-            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description"></textarea>
-            <!-- ... -->
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="dueDate" type="datetime-local">
-            <!-- ... -->
-            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="priorityChoice">
-                <option value="1">Low</option>
-                <option value="2">Medium</option>
-                <option value="3">High</option>
-            </select>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="title">Title</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="description">Description</label>
+                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description"></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="dueDate">Due Date</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="dueDate" type="datetime-local">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="priorityChoice">Priority</label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="priorityChoice">
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                </select>
+            </div>
             <div class="flex justify-end">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="createTask(
                     document.getElementById('title').value,

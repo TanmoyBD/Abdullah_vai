@@ -1,7 +1,7 @@
 {% extends 'navbar.html' %}
 
 {% block content %}
-<body class="bg-gray-200">
+<body style=" background-color:#4ade80" class="bg-purple-200">
     {% csrf_token %}
     <div class="container mx-auto py-12 mt-20">
         <h1 class="text-3xl font-bold text-center mb-8">Task List</h1>
@@ -30,14 +30,19 @@
                     taskElement.classList.add('bg-white', 'rounded', 'shadow', 'p-6', 'mb-6');
 
                     taskElement.innerHTML = `
-                        <h2 class="text-xl font-bold mb-2">${task.title}</h2>
-                        <p class="text-gray-600 mb-2">${task.description}</p>
-                        <p class="text-gray-600 mb-4"><strong>Priority:</strong> ${getPriorityLabel(task.priority_choice)}</p>
-                        <div class="flex justify-end">
+                    <h2 class="text-xl font-bold mb-2">${task.title}</h2>
+                    <p class="text-gray-600 mb-2">${task.description}</p>
+                    <p class="text-gray-600 mb-4"><strong>Priority:</strong> ${getPriorityLabel(task.priority_choice)}</p>
+                    <div class="flex justify-end">
+                        <a href="edit_task/${task.id}">
                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Edit</button>
-                            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">Complete</button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="deleteTask(${task.id})">Delete</button>
-                        </div>
+                        </a>                                                         
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">Complete</button>
+                        <a href="details/${task.id}">
+                            <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-1">Details</button>
+                        </a>                        
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-1" onclick="deleteTask(${task.id})">Delete</button>
+                    </div>                    
                     `;
 
                     taskListElement.appendChild(taskElement);

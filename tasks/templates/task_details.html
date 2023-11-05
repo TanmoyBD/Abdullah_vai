@@ -1,0 +1,61 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<div class="max-w-2xl mx-auto p-4 border border-gray-300 bg-white rounded-lg shadow-lg mb-4 mt-32">
+    <h2 class="text-4xl font-bold mb-4 text-blue-800" id="title"></h2>
+    <p class="text-gray-800 text-lg mb-2" id="description"></p>
+    <p class="text-gray-700 text-lg mb-2"><strong>Description:</strong> <span id="descriptionValue"></span></p>
+    <p class="text-gray-700 text-lg mb-2"><strong>Due Date:</strong> <span id="due_date"></span></p>
+    <p class="text-gray-700 text-lg mb-2"><strong>Priority:</strong> <span id="priority"></span></p>
+    <p class="text-gray-700 text-lg mb-2"><strong>Completed:</strong> <span id="completed"></span></p>
+    <p class="text-gray-700 text-lg mb-2"><strong>Created At:</strong> <span id="created_at"></span></p>
+    <p class="text-gray-700 text-lg mb-2"><strong>Updated At:</strong> <span id="updated_at"></span></p>
+</div>
+
+<script>
+  async function getTaskDetails(taskId) {
+    try {
+      const response = await fetch(`/api/task_details/${taskId}/`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching task details:', error);
+      return null;
+    }
+  }
+
+  const taskId = window.location.href.split('/').slice(-2)[0]; // Extract task ID from URL
+  getTaskDetails(taskId)
+    .then(data => {
+      if (data) {
+        document.getElementById('title').innerText = data.title;
+        document.getElementById('descriptionValue').innerText = data.description;
+        document.getElementById('due_date').innerText = `Due Date: ${data.due_date}`;
+        document.getElementById('completed').innerText = `Completed: ${data.completed ? 'Yes' : 'No'}`;
+        document.getElementById('created_at').innerText = `Created At: ${data.created_at}`;
+        document.getElementById('updated_at').innerText = `Updated At: ${data.updated_at}`;
+
+        // Set priority text based on priority_choice value
+        const priorityElement = document.getElementById('priority');
+        if (data.priority_choice === 1) {
+          priorityElement.innerText = 'Priority: Low';
+        } else if (data.priority_choice === 2) {
+          priorityElement.innerText = 'Priority: Medium';
+        } else if (data.priority_choice === 3) {
+          priorityElement.innerText = 'Priority: High';
+        } else {
+          priorityElement.innerText = 'Priority: Unknown';
+        }
+
+      } else {
+        console.error('Failed to retrieve task details.');
+      }
+    })
+    .catch(error => console.error(error));
+</script>
+
+{% endblock %}

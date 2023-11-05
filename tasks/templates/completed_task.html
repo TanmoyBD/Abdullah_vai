@@ -1,0 +1,41 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl space-y-4">
+
+  <h2 class="text-2xl font-bold mb-4">Completed Tasks</h2>
+
+  <div id="completedTasksList" class="space-y-4"></div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const completedTasksList = document.getElementById('completedTasksList');
+
+        fetch('http://127.0.0.1:8000/api/completed_tasks/')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(task => {
+                    const card = document.createElement('div');
+                    card.classList.add('bg-blue-100', 'p-4', 'rounded', 'shadow-md');
+
+                    card.innerHTML = `
+                        <div class="font-bold text-lg">${task.title}</div>
+                        <div class="text-gray-800">${task.description}</div>
+                        <div class="text-blue-500">${task.priority_choice}</div>
+                        <div>${task.due_date ? 'Due Date: ' + task.due_date : 'No due date'}</div>
+                        <div>${task.created_at ? 'Created At: ' + task.created_at : ''}</div>
+                        <div>${task.updated_at ? 'Updated At: ' + task.updated_at : ''}</div>
+                        <div>${task.completed ? 'Completed' : 'Not Completed'}</div>
+                    `;
+
+                    completedTasksList.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
+{% endblock %}
